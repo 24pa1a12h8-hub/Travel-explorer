@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Travel Explorer</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="topbar">
+
+<div>
+<h2>🌍 Travel Explorer</h2>
+<p class="quote">"Travel is the only thing you buy that makes you richer."</p>
+</div>
+
+<div class="auth">
+<a href="login.html">Login</a>
+<a href="login.html">Register</a>
+</div>
+
+</div>
+
+
+<div class="layout">
+
+<div class="sidebar">
+
+<h3>Dashboard</h3>
+
+<ul>
+<li onclick="location.href='profile.html'">👤 Profile</li>
+<li onclick="location.href='addExperience.html'">✍️ Give Review</li>
+<li onclick="location.href='reviews.html'">📝 My Reviews</li>
+<li onclick="location.href='index.html'">🏠 Home</li>
+</ul>
+
+</div>
+
+
+<div class="main">
+
+<div class="hero">
+
+<h1>Explore The World</h1>
+<p>Discover destinations and real traveler experiences</p>
+
+</div>
+
+
+<div class="search-box">
+
+<input id="searchInput" type="text" placeholder="Search destinations...">
+
+<button onclick="searchPlace()">Search</button>
+
+</div>
+
+
+<h2>Popular Destinations</h2>
+
+
+<div class="places">
+
+
+<div class="place-card" onclick="openPlace('goa')">
+<img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2">
+<h3>Goa</h3>
+<p>Beaches and nightlife.</p>
+<p class="rating">⭐⭐⭐⭐⭐ 4.8</p>
+</div>
+
+
+<div class="place-card" onclick="openPlace('araku valley')">
+<img src="https://images.unsplash.com/photo-1622308644420-b20142dc993c">
+<h3>Araku Valley</h3>
+<p>Beautiful coffee hills.</p>
+<p class="rating">⭐⭐⭐⭐ 4.5</p>
+</div>
+
+
+<div class="place-card" onclick="openPlace('marina beach')">
+<img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e">
+<h3>Marina Beach</h3>
+<p>Longest urban beach.</p>
+<p class="rating">⭐⭐⭐⭐ 4.6</p>
+</div>
+
+
+<div class="place-card" onclick="openPlace('taj mahal')">
+<img src="https://images.unsplash.com/photo-1564507592333-c60657eea523">
+<h3>Taj Mahal</h3>
+<p>Symbol of eternal love.</p>
+<p class="rating">⭐⭐⭐⭐⭐ 4.9</p>
+</div>
+
+
+<div class="place-card" onclick="openPlace('kerala')">
+<img src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220">
+<h3>Kerala</h3>
+<p>Backwaters and greenery.</p>
+<p class="rating">⭐⭐⭐⭐ 4.7</p>
+</div>
+
+
+<div class="place-card" onclick="openPlace('ladakh')">
+<img src="https://images.unsplash.com/photo-1609947017136-9daf32a5eb16">
+<h3>Ladakh</h3>
+<p>Mountains and monasteries.</p>
+<p class="rating">⭐⭐⭐⭐⭐ 4.8</p>
+</div>
+
+
+<div class="place-card" onclick="openPlace('paris')">
+<img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34">
+<h3>Paris</h3>
+<p>The city of love.</p>
+<p class="rating">⭐⭐⭐⭐⭐ 4.9</p>
+</div>
+
+
+<div class="place-card" onclick="openPlace('bali')">
+<img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e">
+<h3>Bali</h3>
+<p>Island paradise.</p>
+<p class="rating">⭐⭐⭐⭐⭐ 4.8</p>
+</div>
+
+
+<div class="place-card" onclick="openPlace('dubai')">
+<img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c">
+<h3>Dubai</h3>
+<p>Luxury city and desert adventures.</p>
+<p class="rating">⭐⭐⭐⭐⭐ 4.7</p>
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+<p>© 2026 Travel Explorer</p>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>

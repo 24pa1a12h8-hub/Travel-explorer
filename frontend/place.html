@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Place Details</title>
+<link rel="stylesheet" href="styles.css">
+
+<style>
+
+body{
+font-family: Arial, sans-serif;
+margin:40px;
+}
+
+.place-layout{
+display:flex;
+gap:30px;
+margin-top:20px;
+}
+
+.place-image{
+width:420px;
+height:280px;
+object-fit:cover;
+border-radius:10px;
+border:1px solid #ddd;
+}
+
+.place-info{
+flex:1;
+}
+
+.review-card{
+background:#f5f5f5;
+padding:15px;
+margin:15px 0;
+border-radius:8px;
+}
+
+.review-form{
+margin-top:40px;
+padding:20px;
+background:#fafafa;
+border-radius:10px;
+}
+
+.review-form input,
+.review-form textarea{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.review-form button{
+padding:10px 20px;
+background:#00aa6c;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1 id="placeName"></h1>
+
+<div class="place-layout">
+
+<img id="placeImage" class="place-image">
+
+<div class="place-info">
+
+<p id="placeHistory"></p>
+
+<h3>Famous Spots Nearby</h3>
+<ul id="spots"></ul>
+
+<h3>Top Restaurants</h3>
+<ul id="restaurants"></ul>
+
+</div>
+
+</div>
+
+<h2>Traveler Reviews</h2>
+
+<div id="reviews"></div>
+
+<div class="review-form">
+
+<h2>Add Your Review</h2>
+
+<input id="reviewDestination" placeholder="Destination">
+
+<textarea id="reviewDescription" placeholder="Your experience"></textarea>
+
+<input id="reviewTips" placeholder="Travel tips">
+
+<input id="reviewRating" placeholder="Rating (1-5)">
+
+<button onclick="submitReview()">Submit Review</button>
+
+</div>
+
+<script>
+
+const params = new URLSearchParams(window.location.search)
+const place = params.get("place")
+
+document.getElementById("placeName").innerText = place
+document.getElementById("reviewDestination").value = place
+
+
+// automatic related image for ANY place
+document.getElementById("placeImage").src =
+`https://picsum.photos/seed/${place}/800/600`
+
+
+// default info
+let history = `${place} is a popular tourist destination visited by travelers from around the world.`
+
+let spots = [
+`${place} City Center`,
+`${place} Historic Area`,
+`${place} Cultural Museum`
+]
+
+let restaurants = [
+`${place} Grand Restaurant ⭐4.5`,
+`${place} Food Street ⭐4.4`,
+`${place} Local Kitchen ⭐4.3`
+]
+
+
+// better info for some places
+const special = {
+
+"goa":{
+history:"Goa is India's most famous beach destination known for nightlife and beaches.",
+spots:["Baga Beach","Fort Aguada","Dudhsagar Falls"],
+restaurants:["Thalassa ⭐4.8","Fisherman's Wharf ⭐4.7"]
+},
+
+"araku valley":{
+history:"Araku Valley is a scenic hill station known for coffee plantations.",
+spots:["Borra Caves","Padmapuram Gardens","Coffee Museum"],
+restaurants:["Udupi Hotel ⭐4.5","Hilltop Restaurant ⭐4.4"]
+},
+
+"marina beach":{
+history:"Marina Beach is one of the longest urban beaches in the world.",
+spots:["Marina Lighthouse","Anna Memorial","Santhome Cathedral"],
+restaurants:["Murugan Idli Shop ⭐4.7","Sea Shell ⭐4.6"]
+},
+
+"ladakh":{
+history:"Ladakh is famous for dramatic mountain landscapes.",
+spots:["Pangong Lake","Nubra Valley","Magnetic Hill"],
+restaurants:["Tibetan Kitchen ⭐4.6","Bon Appetit ⭐4.5"]
+},
+
+"paris":{
+history:"Paris is the capital of France and one of the most visited cities in the world.",
+spots:["Eiffel Tower","Louvre Museum","Notre Dame Cathedral"],
+restaurants:["Epicure ⭐4.9","Le Meurice ⭐4.8"]
+}
+
+}
+
+
+if(special[place.toLowerCase()]){
+
+history = special[place.toLowerCase()].history
+spots = special[place.toLowerCase()].spots
+restaurants = special[place.toLowerCase()].restaurants
+
+}
+
+
+document.getElementById("placeHistory").innerText = history
+
+
+let spotsHTML=""
+spots.forEach(s=>{
+spotsHTML+=`<li>${s}</li>`
+})
+
+document.getElementById("spots").innerHTML = spotsHTML
+
+
+let restHTML=""
+restaurants.forEach(r=>{
+restHTML+=`<li>${r}</li>`
+})
+
+document.getElementById("restaurants").innerHTML = restHTML
+
+
+
+fetch("http://localhost:5000/experience/all")
+
+.then(res=>res.json())
+
+.then(allReviews=>{
+
+let reviews = allReviews.filter(r =>
+r.destination &&
+r.destination.toLowerCase().includes(place.toLowerCase())
+)
+
+let html=""
+
+if(reviews.length===0){
+
+html=`
+<div class="review-card">
+<p>Amazing place with beautiful scenery.</p>
+<p><b>Tips:</b> Visit during the best season.</p>
+<p>⭐ 4.5</p>
+</div>
+
+<div class="review-card">
+<p>One of my favorite travel experiences.</p>
+<p><b>Tips:</b> Try local food and explore nearby spots.</p>
+<p>⭐ 4.7</p>
+</div>
+`
+
+}else{
+
+reviews.forEach(r=>{
+html+=`
+<div class="review-card">
+<p>${r.description}</p>
+<p><b>Tips:</b> ${r.tips}</p>
+<p>⭐ ${r.rating}</p>
+</div>
+`
+})
+
+}
+
+document.getElementById("reviews").innerHTML = html
+
+})
+
+
+
+function submitReview(){
+
+const destination=document.getElementById("reviewDestination").value
+const description=document.getElementById("reviewDescription").value
+const tips=document.getElementById("reviewTips").value
+const rating=document.getElementById("reviewRating").value
+
+
+fetch("http://localhost:5000/experience/add",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+destination,
+description,
+tips,
+rating
+})
+
+})
+
+.then(res=>res.text())
+
+.then(()=>{
+alert("Review added successfully")
+location.reload()
+})
+
+}
+
+</script>
+
+</body>
+</html>

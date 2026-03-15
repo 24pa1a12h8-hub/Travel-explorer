@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>My Reviews</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="topbar">
+<h2>🌍 Travel Explorer</h2>
+</div>
+
+<div class="main">
+
+<h1>My Reviews</h1>
+
+<div id="reviews"></div>
+
+</div>
+
+<script>
+
+let email = localStorage.getItem("userEmail")
+
+fetch("http://localhost:5000/experience/all")
+.then(res=>res.json())
+.then(data=>{
+
+let reviews = data.filter(r=>r.email===email)
+
+let html=""
+
+reviews.forEach(r=>{
+
+html+=`
+<div class="review-card">
+<h3>${r.destination}</h3>
+<p>${r.description}</p>
+<p><b>Tips:</b> ${r.tips}</p>
+<p>⭐ ${r.rating}</p>
+</div>
+`
+
+})
+
+document.getElementById("reviews").innerHTML=html
+
+})
+
+</script>
+
+</body>
+</html>
